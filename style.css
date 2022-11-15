@@ -44,6 +44,9 @@ body {
     padding: 10px;
     width: 220px;
 }
+.profile {
+    width: 300px;
+}
 
 .cards h1 {
     color: white;
@@ -52,15 +55,22 @@ body {
     font-size: 25px;
     padding: 5px;
 }
+.cards h2 {
+    color: white;
+}
 .pokemon-image {
     width: 200px;
     height: 200px;
+    margin-top: 10px;
     background-color: #2C315E;
     
 }
 .cards img {
     width: 200px;
     height: auto;
+}
+.cards button {
+    padding: 5px;
 }
 
 .type {
@@ -75,15 +85,73 @@ body {
     margin-bottom: 10px;
     font-size: 14px;
 }
-.type .green {
+.type .grass {
     background-color: #569A4B;
 }
-.type .red {
+.type .fire {
     background-color: #AC4F4F;
 }
-.type .blue {
+.type .water {
     background-color: rgb(0, 148, 159);
 }
-.type .purple {
+.type .poison {
     background-color: rgb(146, 41, 199);
+}
+.pokemon-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.pokemon-info-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+.pokemon-info-card h2 {
+    color: white;
+}
+.pokemon-info-card p {
+    color: rgb(207, 207, 207);
+}
+.add {
+    width: 500px;
+    font-size: 30px;
+    text-align: center;
+}
+.add input {
+    font-size: 20px;
+    padding: 5px;
+}
+.add p{
+    font-size: 25px;
+    color: white;
+    text-align: center;
+}
+.add input {
+    margin: 5px;
+}
+.add select {
+    overflow: hidden;
+    padding: 5px;
+    margin: 5px;
+    font-size: 20px;
+    text-align: center;
+}
+.addbutton {
+    background-color: #569A4B;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px !important;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.addbutton:hover {
+    background-color: #447b3c;
+}
+.addbutton:active {
+    background-color: #449c36;
 }
