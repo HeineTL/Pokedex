@@ -28,6 +28,9 @@ body {
     padding: 5px;
     margin: 5px;
 }
+.header h1:hover {
+    cursor: pointer;
+}
 
 .card-list {
     display: flex;
@@ -63,10 +66,12 @@ body {
     height: 200px;
     margin-top: 10px;
     background-color: #2C315E;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .cards img {
-    width: 200px;
+    width: 175px;
     height: auto;
 }
 .cards button {
@@ -75,6 +80,7 @@ body {
 
 .type {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     color: white;
 }
@@ -96,6 +102,21 @@ body {
 }
 .type .poison {
     background-color: rgb(146, 41, 199);
+}
+.type .electric {
+    background-color: rgb(131, 131, 20);
+}
+.type .fairy {
+    background-color: rgb(101, 27, 146);
+}
+.type .normal {
+    background-color: rgb(41, 41, 41);
+}
+.type .psychic {
+    background-color: rgb(43, 41, 130);
+}
+.type .rock {
+    background-color: rgb(106, 57, 22);
 }
 .pokemon-info {
     display: flex;
