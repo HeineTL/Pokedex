@@ -1,6 +1,8 @@
 //MODEL
 const view = document.getElementById("insert-view");
 
+//TODO Gjør om pokedex array til objekt
+
 const pokedex =
     [
         {
@@ -200,11 +202,7 @@ function generatePokemonInfo(index) {
 
     let questions = Object.keys(pokedex[0].pokemons[index]);
 
-
     for (let i = 2; i < questionsAmount; i++) {
-
-        let ttt = questions[i];
-
         text += /*HTML*/`
         <div class="pokemon-info-card">
             <h2>${questions[i].toUpperCase()}</h2>
