@@ -158,6 +158,8 @@ body {
     overflow: hidden;
     padding: 5px;
     margin: 5px;
+    display: flex;
+    height: 205px;
     font-size: 20px;
     text-align: center;
 }
@@ -175,4 +177,13 @@ body {
 }
 .addbutton:active {
     background-color: #449c36;
+}
+.bluebutton {
+    background-color: rgb(162, 59, 59);
+}
+.bluebutton:hover {
+    background-color: rgb(118, 42, 42);
+}
+.bluebutton:active {
+    background-color: rgb(141, 23, 23);
 }

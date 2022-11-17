@@ -144,34 +144,14 @@ function updateView() {
 
 }
 
-function generatePokedexCards() {
-    let pokedexCards = "";
-
-    for (let i = 0; i < pokemons.length; i++) {
-        let pokemonName = pokemons[i].name;
-
-        pokedexCards += /*HTML*/`
-            <div class="cards" onclick="profileView('${pokemonName}', '${i}')">
-                <div class="pokemon-image">
-                    ${addImage(i)}
-                </div>
-
-                <h1>${pokemonName}</h1>
-                ${addType(i)}
-            </div>`;
-    }
-
-    return pokedexCards;
-}
-
-function profileView(name, index) {
+function profileView(index) {
     view.innerHTML = /*HTML*/`
         <div class="card-list">
             <div class="cards profile">
                 <div class="pokemon-image">
                     ${addImage(index)}
                 </div>
-                <h1>${name}</h1>
+                <h1>${pokemons[index].name}</h1>
                 <div class="type">
                     ${addType(index)}
                 </div>
@@ -189,25 +169,52 @@ function addPokemonView() {
         <div class="card-list">
             <div class="cards add">
                 <h2>Add pokemon</h1>
-                <input type="text" placeholder="Pokemon name">
-                <input type="text" placeholder="Abilities">
-                <input type="text" placeholder="Category">
-                <input type="text" placeholder="Height">
-                <input type="text" placeholder="Weight">
-                <p>Hold down CTRL to select multiple types</p>
-                <select id="type" name="Type" multiple>
-                    <option value="grass">Grass</option>
-                    <option value="fire">Fire</option>
-                    <option value="water">Water</option>
-                    <option value="poison">Poison</option>
+                <input id="pokemonName" type="text" placeholder="Pokemon name">
+                <input id="pokemonAbility" type="text" placeholder="Abilities">
+                <input id="pokemonCategory" type="text" placeholder="Category">
+                <input id="pokemonHeight" type="text" placeholder="Height">
+                <input id="pokemonWeight" type="text" placeholder="Weight">
+                <input type="file" hidden accept=".png,.jpg,.jpeg" id="fileID" style="display:none;">
+                <p><b>Add pokemon image</b></p>
+                <select id="pokemonType" name="Type" multiple>
+                    <option value="Grass">Grass</option>
+                    <option value="Fire">Fire</option>
+                    <option value="Water">Water</option>
+                    <option value="Poison">Poison</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Psychic">Psychic</option>
+                    <option value="Rock">Rock</option>
                 </select>
 
-                <button class="addbutton">Add pokemon</button>
+                <button onclick="addPokemon()" class="addbutton">Add pokemon</button>
                 
-                <button>Go back</button>
+                <button onclick="updateView()">Go back</button>
+
+                <div id="add-pokemon-error">
             </div>
         </div>
     `;
+}
+
+function generatePokedexCards() {
+    let pokedexCards = "";
+
+    for (let i = 0; i < pokemons.length; i++) {
+        let pokemonName = pokemons[i].name;
+
+        pokedexCards += /*HTML*/`
+            <div class="cards" onclick="profileView(${i})">
+                <div class="pokemon-image">
+                    ${addImage(i)}
+                </div>
+
+                <h1>${pokemonName}</h1>
+                ${addType(i)}
+            </div>`;
+    }
+
+    return pokedexCards;
 }
 
 function addPokemonInfo(index) {
@@ -240,7 +247,7 @@ function addImage(index) {
 }
 
 function addType(index) {
-    let types = pokedex["pokemons"][index].type;
+    let types = pokemons[index].type;
 
     let type = "<div class='type'>";
 
@@ -254,3 +261,39 @@ function addType(index) {
 }
 
 //CONTROLLER
+
+function addPokemon() {
+    let errorMessage = document.getElementById("add-pokemon-error");
+
+    let name = document.getElementById("pokemonName").value;
+    let ability = document.getElementById("pokemonAbility").value;
+    let category = document.getElementById("pokemonCategory").value;
+    let height = document.getElementById("pokemonHeight").value;
+    let weight = document.getElementById("pokemonWeight").value;
+    let type = [];
+
+    for (let option of document.getElementById("pokemonType").options) {
+        if (option.selected) {
+            type.push(option.value);
+        }
+    }
+
+    if (name == "" || ability == "" || category == "" || height == "" || weight == "" || type == "") {
+        errorMessage.innerHTML = "<h2>Missing information!</h2>";
+    }
+    else {
+        //Add pokemon
+        pokemons.push(
+            {
+                name: name,
+                image_path: "img/Pokeball.png",
+                type: type,
+                abilities: ability,
+                category: category,
+                height: height,
+                weight: weight,
+            });
+
+        updateView();
+    }
+}
