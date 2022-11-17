@@ -131,17 +131,18 @@ const pokedex =
 
 let pokemons = pokedex["pokemons"];
 
+let deleteButton = document.getElementById("deleteButton");
+
 //VIEW
 updateView();
 
-function updateView() {
+function updateView(del = false) {
 
     view.innerHTML = /*HTML*/`
-    <div class='card-list'>
-        ${generatePokedexCards()}
-    </div>
-    `;
-
+        <div class='card-list'>
+        ${generatePokedexCards(del)}
+        </div>
+        `;
 }
 
 function profileView(index) {
@@ -197,20 +198,25 @@ function addPokemonView() {
     `;
 }
 
-function generatePokedexCards() {
+function generatePokedexCards(del) {
     let pokedexCards = "";
 
+
     for (let i = 0; i < pokemons.length; i++) {
-        let pokemonName = pokemons[i].name;
+
+        let deleteButton = del ? '<button onclick="deletePokemon()">Delete pokemon</button>' : "";
+
+        let onClickProfile = del ? '' : `onclick="profileView(${i})"`;
 
         pokedexCards += /*HTML*/`
-            <div class="cards" onclick="profileView(${i})">
+            <div class="cards" ${onClickProfile}>
                 <div class="pokemon-image">
                     ${addImage(i)}
                 </div>
 
-                <h1>${pokemonName}</h1>
+                <h1>${pokemons[i].name}</h1>
                 ${addType(i)}
+                ${deleteButton}
             </div>`;
     }
 
@@ -292,8 +298,26 @@ function addPokemon() {
                 category: category,
                 height: height,
                 weight: weight,
-            });
+            }
+        );
 
+        updateView();
+    }
+}
+
+function deleteMode() {
+    if(deleteButton.innerHTML.includes("Delete")) {
+        deleteButton.innerHTML = "Stop deleting";
+        updateView(true);
+    } else {
+        updateView(false);
+        deleteButton.innerHTML = "Delete";
+    }
+}
+
+function deletePokemon() {
+    if(deleteButton.innerHTML.includes("Stop")) {
+        deleteButton.innerHTML = "Delete";
         updateView();
     }
 }
