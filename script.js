@@ -1,10 +1,7 @@
 //MODEL
 const view = document.getElementById("insert-view");
 
-//TODO legg til egen file path til bilde for hver pokemon
-//TODO Add funksjon
-//TODO Edit funksjon (updateView med en parameter som sier at det skal legges til diverse edit knapper)
-//TODO Delete funksjon (^ det samme med en delete knapp i stedet for)
+//TODO Edit funksjon (editmode = false)
 
 const pokedex =
 {
@@ -127,20 +124,26 @@ const pokedex =
             weight: "4kg",
         },
     ],
+    types: ["Grass", "Fire", "Water", "Poison", "Electric", "Normal", "Psychic", "Rock"],
 };
 
 let pokemons = pokedex["pokemons"];
 
-let deleteButton = document.getElementById("deleteButton");
+const deleteButton = document.getElementById("deleteButton");
+const editButton = document.getElementById("editButton");
+
+let deleteMode = false;
+
+let editMode = false;
 
 //VIEW
 updateView();
 
-function updateView(del = false) {
+function updateView() {
 
     view.innerHTML = /*HTML*/`
         <div class='card-list'>
-        ${generatePokedexCards(del)}
+        ${generatePokedexCards()}
         </div>
         `;
 }
@@ -198,25 +201,38 @@ function addPokemonView() {
     `;
 }
 
-function generatePokedexCards(del) {
+function generatePokedexCards() {
     let pokedexCards = "";
 
 
     for (let i = 0; i < pokemons.length; i++) {
 
-        let deleteButton = del ? '<button onclick="deletePokemon()">Delete pokemon</button>' : "";
+        let showProfile = deleteMode || editMode ? '' : `onclick="profileView(${i})"`;
 
-        let onClickProfile = del ? '' : `onclick="profileView(${i})"`;
+        let removeButton = deleteMode ? `<button onclick="deletePokemon(${i})">Delete pokemon</button>` : "";
+
+        let editModeText = editMode ? `<input id="edit-name-${i}" class="edit-input" type='text' value=${pokemons[i].name}>` : `<h1>${pokemons[i].name}</h1>`;
+
+        let editButton = editMode ? `<button onclick="editPokemon(${i})">Submit Changes</button>` : "";
+
+        let editInfo = editMode ? `
+        <input id="edit-category-${i}" class="edit-input" type='text' value=${pokemons[i].category}>
+        <input id="edit-abilities-${i}" class="edit-input" type='text' value=${pokemons[i].abilities}>
+        <input id="edit-height-${i}" class="edit-input" type='text' value=${pokemons[i].height}>
+        <input id="edit-weight-${i}" class="edit-input" type='text' value=${pokemons[i].weight}>
+        ` : '';
 
         pokedexCards += /*HTML*/`
-            <div class="cards" ${onClickProfile}>
+            <div class="cards" ${showProfile}>
                 <div class="pokemon-image">
                     ${addImage(i)}
                 </div>
 
-                <h1>${pokemons[i].name}</h1>
+                ${editModeText}
                 ${addType(i)}
-                ${deleteButton}
+                ${editInfo}
+                ${editButton}
+                ${removeButton}
             </div>`;
     }
 
@@ -255,15 +271,34 @@ function addImage(index) {
 function addType(index) {
     let types = pokemons[index].type;
 
-    let type = "<div class='type'>";
+    if(!editMode) {
+        //Edit mode FALSE
+        let type = "<div class='type'>";
+    
+        for (let i = 0; i < types.length; i++) {
+            type += `<span class="${types[i].toLowerCase()}">${types[i]}</span>`;
+        }
+    
+        type += "</div>";
 
-    for (let i = 0; i < types.length; i++) {
-        type += `<span class="${types[i].toLowerCase()}">${types[i]}</span>`;
+        return type;
+    } else {
+        // Edit mode TRUE
+        let type = `<select id="edit-type-${index}" name="Type" multiple>`;
+
+            for (let y = 0; y < pokedex["types"].length; y++) { //Loops through all types and add them as options
+                let typeName = pokedex["types"][y];
+
+                let selectedText = types.includes(typeName) ? "selected" : "";
+                type += `<option ${selectedText} value="${typeName}">${typeName}</option>`;
+            }  
+                
+        type += '</select>';
+
+        return type;
     }
 
-    type += "</div>";
 
-    return type;
 }
 
 //CONTROLLER
@@ -305,19 +340,47 @@ function addPokemon() {
     }
 }
 
-function deleteMode() {
-    if(deleteButton.innerHTML.includes("Delete")) {
-        deleteButton.innerHTML = "Stop deleting";
-        updateView(true);
-    } else {
-        updateView(false);
-        deleteButton.innerHTML = "Delete";
+function deletePokemon(index) {
+    pokemons.splice(index, 1);
+    updateView();
+}
+function editPokemon(index) {
+    let name = document.getElementById(`edit-name-${index}`).value;
+    let abilities = document.getElementById(`edit-abilities-${index}`).value;
+    let category = document.getElementById(`edit-category-${index}`).value;
+    let height = document.getElementById(`edit-height-${index}`).value;
+    let weight = document.getElementById(`edit-weight-${index}`).value;
+    let type = [];
+
+    for (let option of document.getElementById(`edit-type-${index}`).options) {
+        if (option.selected) {
+            type.push(option.value);
+        }
     }
+
+    let editArray = pokemons[index];
+
+    editArray.name = name;
+    editArray.abilities = abilities;
+    editArray.category = category;
+    editArray.height = height;
+    editArray.weight = weight;
+    editArray.type = type;
+    
+    clickEditButton()
+
 }
 
-function deletePokemon() {
-    if(deleteButton.innerHTML.includes("Stop")) {
-        deleteButton.innerHTML = "Delete";
-        updateView();
-    }
+function clickDeleteButton() {
+    deleteMode = !deleteMode;
+    let deleteButtonText = deleteMode ? "Stop deleting" : "Delete";
+    deleteButton.innerHTML = deleteButtonText;
+    updateView();
+}
+
+function clickEditButton() {
+    editMode = !editMode;
+    let editButtonText = editMode ? "Stop editing" : "Edit";
+    editButton.innerHTML = editButtonText;
+    updateView();
 }

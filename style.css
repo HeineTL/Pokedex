@@ -187,3 +187,8 @@ body {
 .bluebutton:active {
     background-color: rgb(141, 23, 23);
 }
+.edit-input {
+    padding: 5px;
+    font-size: 15px;
+    text-align: center;
+}
