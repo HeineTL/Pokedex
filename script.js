@@ -179,7 +179,7 @@ function addPokemonView() {
                 <input id="pokemonHeight" type="text" placeholder="Height">
                 <input id="pokemonWeight" type="text" placeholder="Weight">
                 <input type="file" hidden accept=".png,.jpg,.jpeg" id="fileID" style="display:none;">
-                <p><b>Add pokemon image</b></p>
+                <p><b>Add pokemon type</b></p>
                 <select id="pokemonType" name="Type" multiple>
                     <option value="Grass">Grass</option>
                     <option value="Fire">Fire</option>
